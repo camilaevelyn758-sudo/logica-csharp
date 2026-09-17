@@ -1,3 +1,42 @@
-<Solution>
-  <Project Path="Desconto/Desconto.csproj" Id="c09630eb-d8a1-46c0-818c-7146a8b0113a" />
-</Solution>
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Desconto
+{
+    /*
+     * 5. Calcular desconto
+     * Um produto com preço acima de 100 reais tem um desconto de 10%. Caso contrario, o desconto é de 5%.
+     * Dado o preço, calcule o valor do desconto.
+     * Entrada: 120
+     * Saída esperada: 12 reais de desconto.
+     */
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            double precoProduto, descontoPreco;
+
+            Console.Write("Digite o preço do produto: ");
+            precoProduto = double.Parse(Console.ReadLine());
+
+            if (precoProduto > 100) ;
+            {
+                descontoPreco = precoProduto * 0.10;
+                Console.WriteLine(descontoPreco + "reais de desconto"); 
+             
+            }
+                descontoPreco = precoProduto * 0.05;
+                Console.Write(descontoPreco + "reais de desconto");
+            
+
+
+
+        }
+    }
+}
+
