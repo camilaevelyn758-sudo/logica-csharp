@@ -1,3 +1,37 @@
-<Solution>
-  <Project Path="salario minimo/salario minimo.csproj" Id="8739c302-4c8d-48bc-846b-995f0b12e0c4" />
-</Solution>
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace salario_minimo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            Double salarioMinimo = 1518.00;
+
+
+
+            Console.Write("Digite o valor do seu salário:");
+
+            Double salarioUsuario = double.Parse(Console.ReadLine());
+
+
+
+            Double quantidadeSalarios = salarioUsuario / salarioMinimo;
+
+
+
+            Console.WriteLine($"Você ganha + quantidadeSalarios salarioMinimo.");
+
+
+
+
+        }
+    }
+}
