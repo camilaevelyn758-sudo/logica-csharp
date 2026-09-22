@@ -1,3 +1,40 @@
-<Solution>
-  <Project Path="valores inteiro A B/valores inteiro A B.csproj" />
-</Solution>
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VALORES_INTIEROS_A_B
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            /*Faça um algoritmo que leia dois valores inteiros A e B. Ao final de qualquer um dos calculos 
+            foram iguais, deverá somar os dois valores. Caso contrario deverar multiplicar A por B. Ao final de qualquer 
+            um dos calculos deve - se atribuir o resultado da variavel C e imprimir seu valor na tela */
+
+            Console.WriteLine("Digite valor da A: ");
+            int A = int.Parse(Console.ReadLine());
+            Console.WriteLine("Digite valor da B: ");
+            int B = int.Parse(Console.ReadLine());
+            int C; 
+            if (A == B)
+            {
+                C = A + B;
+            }
+            else
+            {
+                C = A * B;
+            }
+
+            Console.WriteLine("O resultado armazenado em C é: {C}" ) ;
+
+
+
+
+        }
+    }
+}
+
