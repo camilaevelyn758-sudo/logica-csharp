@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace algortimo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+           
+
+            Console.Write("Digite um valor:");
+
+            Double valor = double.Parse(Console.ReadLine());
+
+
+
+            Double valorReajustado = valor * 1.05;
+
+
+
+            Console.WriteLine($"Valor com 5 % de reajuste: { valorReajustado } ") ; 
+                 
+        }
+    }
+}
