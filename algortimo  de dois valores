@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace algoritmo_de_dois_valores
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Digite o primeiro valor  (1 para VERDADEIRO, 0 para FALSO): ");
+
+            int valor1 = int.Parse(Console.ReadLine());
+
+
+
+            Console.Write("Digite o segundo valor(1 para VERDADEIRO, 0 para FALSO): ");
+
+            int valor2 = int.Parse(Console.ReadLine());
+
+
+
+            if (valor1 == 1 && valor2 == 1)
+
+            {
+
+                Console.WriteLine("Ambos os valores são VERDADEIRO.");
+
+            }
+
+            else if (valor1 == 0 && valor2 == 0)
+
+            {
+
+                Console.WriteLine("Ambos os valores são FALSO.");
+
+            }
+
+            else
+
+            {
+                Console.WriteLine("Os valores são DIFERENTES(um é verdadeiro e o outro é falso).");
+            }
+
+            }
+           
+        }
+    }
+
