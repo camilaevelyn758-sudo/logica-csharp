@@ -1,0 +1,289 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace algortimo
+{
+    internal class Program
+    {
+        public class ClientePodologia
+        {
+            public int Id { get; set; }
+            public string Nome { get; set; }
+            public string CPF { get; set; }
+            public string Telefone { get; set; }
+            public DateTime DataNascimento { get; set; }
+            public bool PossuiDiabetes { get; set; }
+            public string ObservacoesAnamnese { get; set; }
+        }
+
+        public class Agendamento
+        {
+            public int id { get; set; }
+            public int ClienteId { get; set; }
+            public int PodologoId { get; set; }
+            public int ProcedimentoId { get; set; }
+            public DateTime DataHora { get; set; }
+            public string Status { get; set; }
+        }
+
+        static void Main(string[] args)
+        {
+            List<ClientePodologia> listaClientes = new List<ClientePodologia>();
+            List<Agendamento> listaAgendamentos = new List<Agendamento>();
+            int opcao = -1;
+
+            do
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                Console.WriteLine(@"
+░█████╗░██╗░░░░░██╗███╗░░██╗██╗░█████╗░░█████╗░	██████╗░███████╗
+██╔══██╗██║░░░░░██║████╗░██║██║██╔══██╗██╔══██╗	██╔══██╗██╔════╝
+██║░░╚═╝██║░░░░░██║██╔██╗██║██║██║░░╚═╝███████║	██║░░██║█████╗░░
+██║░░██╗██║░░░░░██║██║╚████║██║██║░░██╗██╔══██║	██║░░██║██╔══╝░░
+╚█████╔╝███████╗██║██║░╚███║██║╚█████╔╝██║░░██║	██████╔╝███████╗
+░╚════╝░╚══════╝╚═╝╚═╝░░╚══╝╚═╝░╚════╝░╚═╝░░╚═╝	╚═════╝░╚══════╝
+ 
+██████╗░░█████╗░██████╗░░█████╗░██╗░░░░░░█████╗░░██████╗░██╗░█████╗░	
+██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║░░░░░██╔══██╗██╔════╝░██║██╔══██╗	
+██████╔╝██║░░██║██║░░██║██║░░██║██║░░░░░██║░░██║██║░░██╗░██║███████║	
+██╔═══╝░██║░░██║██║░░██║██║░░██║██║░░░░░██║░░██║██║░░╚██╗██║██╔══██║	
+██║░░░░░╚█████╔╝██████╔╝╚█████╔╝███████╗╚█████╔╝╚██████╔╝██║██║░░██║	
+╚═╝░░░░░░╚════╝░╚═════╝░░╚════╝░╚══════╝░╚════╝░░╚═════╝░╚═╝╚═╝░░╚═╝	
+ 
+░█████╗░░██████╗░███████╗███╗░░██╗██████╗░░█████╗░███╗░░░███╗███████╗███╗░░██╗████████╗░█████╗░░██████╗
+██╔══██╗██╔════╝░██╔════╝████╗░██║██╔══██╗██╔══██╗████╗░████║██╔════╝████╗░██║╚══██╔══╝██╔══██╗██╔════╝
+███████║██║░░██╗░█████╗░░██╔██╗██║██║░░██║███████║██╔████╔██║█████╗░░██╔██╗██║░░░██║░░░██║░░██║╚█████╗░
+██╔══██║██║░░╚██╗██╔══╝░░██║╚████║██║░░██║██╔══██║██║╚██╔╝██║██╔══╝░░██║╚████║░░░██║░░░██║░░██║░╚═══██╗
+██║░░██║╚██████╔╝███████╗██║░╚███║██████╔╝██║░░██║██║░╚═╝░██║███████╗██║░╚███║░░░██║░░░╚█████╔╝██████╔╝
+╚═╝░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚══╝╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═════╝░");
+
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Blue;
+
+
+                Console.WriteLine("1 - Cadastrar Cliente (Ficha Rápida)");
+                Console.WriteLine("2 - Cadastrar Podólogo");
+                Console.WriteLine("3 - Cadastrar Procedimento/Serviço");
+                Console.WriteLine("4 - Agendar Consulta");
+                Console.WriteLine("5 - Listar Agendamentos");
+                Console.WriteLine("6 - Exibir Todos os Cadastros");
+                Console.WriteLine("0 - Sair");
+                Console.Write("Escolha uma opção: ");
+
+                int.TryParse(Console.ReadLine(), out opcao);
+
+                switch (opcao) 
+                {
+                    case 1:
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+
+                        Console.WriteLine(@"
+░█████╗░░█████╗░██████╗░░█████╗░░██████╗████████╗██████╗░░█████╗░	██████╗░███████╗
+██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗	██╔══██╗██╔════╝
+██║░░╚═╝███████║██║░░██║███████║╚█████╗░░░░██║░░░██████╔╝██║░░██║	██║░░██║█████╗░░
+██║░░██╗██╔══██║██║░░██║██╔══██║░╚═══██╗░░░██║░░░██╔══██╗██║░░██║	██║░░██║██╔══╝░░
+╚█████╔╝██║░░██║██████╔╝██║░░██║██████╔╝░░░██║░░░██║░░██║╚█████╔╝	██████╔╝███████╗
+░╚════╝░╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░	╚═════╝░╚══════╝
+ 
+░█████╗░██╗░░░░░██╗███████╗███╗░░██╗████████╗███████╗
+██╔══██╗██║░░░░░██║██╔════╝████╗░██║╚══██╔══╝██╔════╝
+██║░░╚═╝██║░░░░░██║█████╗░░██╔██╗██║░░░██║░░░█████╗░░
+██║░░██╗██║░░░░░██║██╔══╝░░██║╚████║░░░██║░░░██╔══╝░░
+╚█████╔╝███████╗██║███████╗██║░╚███║░░░██║░░░███████╗
+░╚════╝░╚══════╝╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝");
+
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+
+                        ClientePodologia novoCliente = new ClientePodologia();
+
+                        novoCliente.Id = listaClientes.Count + 1;
+
+                        Console.Write("Nome: ");
+                        novoCliente.Nome = Console.ReadLine();
+
+                        Console.Write("CPF: ");
+                        novoCliente.CPF = Console.ReadLine();
+
+                        Console.Write("Telefone: ");
+                        novoCliente.Telefone = Console.ReadLine();
+
+                        Console.Write("Data de Nascimento (dd/mm/aaaa): ");
+                        DateTime tempData;
+                        if (DateTime.TryParse(Console.ReadLine(), out tempData))
+                        {
+                            novoCliente.DataNascimento = tempData;
+                        }
+
+                        Console.Write("Possui Diabetes? (s/n): ");
+                        string respDiabetes = Console.ReadLine().ToLower();
+                        novoCliente.PossuiDiabetes = (respDiabetes == "s");
+
+                        Console.Write("Observações de Anamnese: ");
+                        novoCliente.ObservacoesAnamnese = Console.ReadLine();
+
+                        listaClientes.Add(novoCliente);
+
+                        Console.WriteLine("\nCliente cadastrado com sucesso!");
+                        Console.ReadLine();
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\nFuncionalidade: Cadastrar Podólogo");
+                        Console.ReadLine();
+                        break;
+
+                    case 3:
+                        Console.WriteLine("\nFuncionalidade: Cadastrar Procedimento/Serviço");
+                        Console.ReadLine();
+                        break;
+
+                    case 4:
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+
+                        Console.WriteLine(@"
+░█████╗░░██████╗░███████╗███╗░░██╗██████╗░░█████╗░██████╗░
+██╔══██╗██╔════╝░██╔════╝████╗░██║██╔══██╗██╔══██╗██╔══██╗
+███████║██║░░██╗░█████╗░░██╔██╗██║██║░░██║███████║██████╔╝
+██╔══██║██║░░╚██╗██╔══╝░░██║╚████║██║░░██║██╔══██║██╔══██╗
+██║░░██║╚██████╔╝███████╗██║░╚███║██████╔╝██║░░██║██║░░██║
+╚═╝░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚══╝╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝
+ 
+░█████╗░░█████╗░███╗░░██╗░██████╗██╗░░░██╗██╗░░░░░████████╗░█████╗░
+██╔══██╗██╔══██╗████╗░██║██╔════╝██║░░░██║██║░░░░░╚══██╔══╝██╔══██╗
+██║░░╚═╝██║░░██║██╔██╗██║╚█████╗░██║░░░██║██║░░░░░░░░██║░░░███████║
+██║░░██╗██║░░██║██║╚████║░╚═══██╗██║░░░██║██║░░░░░░░░██║░░░██╔══██║
+╚█████╔╝╚█████╔╝██║░╚███║██████╔╝╚██████╔╝███████╗░░░██║░░░██║░░██║
+░╚════╝░░╚════╝░╚═╝░░╚══╝╚═════╝░░╚═════╝░╚══════╝░░░╚═╝░░░╚═╝░░╚═╝ ");
+
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Agendamento novoAgendamento = new Agendamento();
+
+                        novoAgendamento.id = listaAgendamentos.Count + 1;
+
+                        Console.Write("ID do Cliente: ");
+                        int auxClienteId;
+                        int.TryParse(Console.ReadLine(), out auxClienteId);
+                        novoAgendamento.ClienteId = auxClienteId;
+
+                        Console.Write("ID do Podólogo: ");
+                        int auxPodologoId;
+                        int.TryParse(Console.ReadLine(), out auxPodologoId);
+                        novoAgendamento.PodologoId = auxPodologoId;
+
+                        Console.Write("ID do Procedimento: ");
+                        int auxProcedimentoId;
+                        int.TryParse(Console.ReadLine(), out auxProcedimentoId);
+                        novoAgendamento.ProcedimentoId = auxProcedimentoId;
+
+                        Console.Write("Data e Hora (dd/mm/aaaa hh:mm): ");
+                        DateTime tempDataHora;
+                        if (DateTime.TryParse(Console.ReadLine(), out tempDataHora))
+                        {
+                            novoAgendamento.DataHora = tempDataHora;
+                        }
+
+                        novoAgendamento.Status = "Agendado";
+
+                        listaAgendamentos.Add(novoAgendamento);
+
+                        Console.WriteLine("\nConsulta agendada com sucesso!");
+                        Console.ReadLine();
+                        break;
+
+                    case 5:
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+
+                        Console.WriteLine(@"
+██╗░░░░░██╗░██████╗████████╗░█████╗░  ██████╗░███████╗
+██║░░░░░██║██╔════╝╚══██╔══╝██╔══██╗  ██╔══██╗██╔════╝
+██║░░░░░██║╚█████╗░░░░██║░░░███████║  ██║░░██║█████╗░░
+██║░░░░░██║░╚═══██╗░░░██║░░░██╔══██║  ██║░░██║██╔══╝░░
+███████╗██║██████╔╝░░░██║░░░██║░░██║  ██████╔╝███████╗
+╚══════╝╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝  ╚═════╝░╚══════╝
+
+░█████╗░░██████╗░███████╗███╗░░██╗██████╗░░█████╗░███╗░░░███╗███████╗███╗░░██╗████████╗░█████╗░░██████╗
+██╔══██╗██╔════╝░██╔════╝████╗░██║██╔══██╗██╔══██╗████╗░████║██╔════╝████╗░██║╚══██╔══╝██╔══██╗██╔════╝
+███████║██║░░██╗░█████╗░░██╔██╗██║██║░░██║███████║██╔████╔██║█████╗░░██╔██╗██║░░░██║░░░██║░░██║╚█████╗░
+██╔══██║██║░░╚██╗██╔══╝░░██║╚████║██║░░██║██╔══██║██║╚██╔╝██║██╔══╝░░██║╚████║░░░██║░░░██║░░██║░╚═══██╗
+██║░░██║╚██████╔╝███████╗██║░╚███║██████╔╝██║░░██║██║░╚═╝░██║███████╗██║░╚███║░░░██║░░░╚█████╔╝██████╔╝
+╚═╝░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚══╝╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═════╝░");
+
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+
+                        if (listaAgendamentos.Count == 0)
+                        {
+                            Console.WriteLine("Nenhum agendamento encontrado.");
+                        }
+                        else
+                        {
+                            foreach (var itemAgendamento in listaAgendamentos)
+                            {
+                                Console.WriteLine($"ID: {itemAgendamento.id} | Cliente ID: {itemAgendamento.ClienteId} | Podólogo ID: {itemAgendamento.PodologoId} | Procedimento ID: {itemAgendamento.ProcedimentoId} | Data/Hora: {itemAgendamento.DataHora} | Status: {itemAgendamento.Status}");
+                            }
+                        }
+                        Console.ReadLine();
+                        break;
+
+                    case 6:
+                        Console.Clear();
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+
+                        Console.WriteLine(@"
+░█████╗░██╗░░░░░██╗███████╗███╗░░██╗████████╗███████╗░██████╗
+██╔══██╗██║░░░░░██║██╔════╝████╗░██║╚══██╔══╝██╔════╝██╔════╝
+██║░░╚═╝██║░░░░░██║█████╗░░██╔██╗██║░░░██║░░░█████╗░░╚█████╗░
+██║░░██╗██║░░░░░██║██╔══╝░░██║╚████║░░░██║░░░██╔══╝░░░╚═══██╗
+╚█████╔╝███████╗██║███████╗██║░╚███║░░░██║░░░███████╗██████╔╝
+░╚════╝░╚══════╝╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝╚═════╝░
+ 
+░█████╗░░█████╗░██████╗░░█████╗░░██████╗████████╗██████╗░░█████╗░██████╗░░█████╗░░██████╗
+██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝
+██║░░╚═╝███████║██║░░██║███████║╚█████╗░░░░██║░░░██████╔╝███████║██║░░██║██║░░██║╚█████╗░
+██║░░██╗██╔══██║██║░░██║██╔══██║░╚═══██╗░░░██║░░░██╔══██╗██╔══██║██║░░██║██║░░██║░╚═══██╗
+╚█████╔╝██║░░██║██████╔╝██║░░██║██████╔╝░░░██║░░░██║░░██║██║░░██║██████╔╝╚█████╔╝██████╔╝
+░╚════╝░╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░░╚════╝░╚═════╝░");
+
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+
+
+                        if (listaClientes.Count == 0)
+                        {
+                            Console.WriteLine("Nenhum cliente cadastrado.");
+                        }
+                        else
+                        {
+                            foreach (var itemCliente in listaClientes)
+                            {
+                                Console.WriteLine($"ID: {itemCliente.Id} | Nome: {itemCliente.Nome} | CPF: {itemCliente.CPF} | Tel: {itemCliente.Telefone} | Diabetes: {(itemCliente.PossuiDiabetes ? "Sim" : "Não")}");
+                            }
+                        }
+                        Console.ReadLine();
+                        break;
+
+                    case 0:
+                        Console.WriteLine("\nSaindo do sistema...");
+                        break;
+
+                    default:
+                        Console.WriteLine("\nOpção inválida!");
+                        Console.ReadLine();
+                        break;
+                }
+
+            } while (opcao != 0);
+        }
+    }
+}
