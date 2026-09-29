@@ -1,0 +1,209 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+
+namespace Sistema_De_Internação_Hospitalar
+{
+
+    public class Paciente
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = "";
+        public string CPF { get; set; } = "";
+        public DateTime DataNascimento { get; set; }
+        public string TipoSanguineo { get; set; } = "";
+        public string Alergias { get; set; } = "";
+        public string ContatoEmergencia { get; set; } = "";
+    }
+
+    public class Medico
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = "";
+        public string CRM { get; set; } = "";
+        public string Especialidade { get; set; } = "";
+        public string Telefone { get; set; } = "";
+    }
+
+    public class Leito
+    {
+        public int Id { get; set; }
+        public string NumeroQuarto { get; set; } = "";
+        public string Tipo { get; set; } = "";
+        public bool EstaOcupado { get; set; } = false;
+    }
+
+    public class Internacao
+    {
+        public int Id { get; set; }
+        public int PacienteId { get; set; }
+        public int MedicoResponsavelId { get; set; }
+        public int LeitoId { get; set; }
+        public DateTime DataEntrada { get; set; }
+        public DateTime? DataAlta { get; set; }
+        public string DiagnosticoEntrada { get; set; } = "";
+        public string Status { get; set; } = "Em Internação";
+    }
+
+    internal class Program
+    {
+        static List<Paciente> pacientes = new List<Paciente>();
+        static List<Medico> medicos = new List<Medico>();
+        static List<Leito> leitos = new List<Leito>();
+        static List<Internacao> internacoes = new List<Internacao>();
+
+        static void Main(string[] args)
+        {
+            int opcao = -1;
+            while (opcao != 0)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(@"
+░██████╗██╗░██████╗████████╗███████╗███╗░░░███╗░█████╗░	██████╗░███████╗
+██╔════╝██║██╔════╝╚══██╔══╝██╔════╝████╗░████║██╔══██╗	██╔══██╗██╔════╝
+╚█████╗░██║╚█████╗░░░░██║░░░█████╗░░██╔████╔██║███████║	██║░░██║█████╗░░
+░╚═══██╗██║░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║██╔══██║	██║░░██║██╔══╝░░
+██████╔╝██║██████╔╝░░░██║░░░███████╗██║░╚═╝░██║██║░░██║	██████╔╝███████╗
+╚═════╝░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝╚═╝░░╚═╝	╚═════╝░╚══════╝
+ 
+██╗███╗░░██╗████████╗███████╗██████╗░███╗░░██╗░█████╗░░█████╗░░█████╗░░█████╗░
+██║████╗░██║╚══██╔══╝██╔════╝██╔══██╗████╗░██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗
+██║██╔██╗██║░░░██║░░░█████╗░░██████╔╝██╔██╗██║███████║██║░░╚═╝███████║██║░░██║
+██║██║╚████║░░░██║░░░██╔══╝░░██╔══██╗██║╚████║██╔══██║██║░░██╗██╔══██║██║░░██║
+██║██║░╚███║░░░██║░░░███████╗██║░░██║██║░╚███║██║░░██║╚█████╔╝██║░░██║╚█████╔╝
+╚═╝╚═╝░░╚══╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝░╚════╝░
+ 
+██╗░░██╗░█████╗░░██████╗██████╗░██╗████████╗░█████╗░██╗░░░░░░█████╗░██████╗░
+██║░░██║██╔══██╗██╔════╝██╔══██╗██║╚══██╔══╝██╔══██╗██║░░░░░██╔══██╗██╔══██╗
+███████║██║░░██║╚█████╗░██████╔╝██║░░░██║░░░███████║██║░░░░░███████║██████╔╝
+██╔══██║██║░░██║░╚═══██╗██╔═══╝░██║░░░██║░░░██╔══██║██║░░░░░██╔══██║██╔══██╗
+██║░░██║╚█████╔╝██████╔╝██║░░░░░██║░░░██║░░░██║░░██║███████╗██║░░██║██║░░██║
+╚═╝░░╚═╝░╚════╝░╚═════╝░╚═╝░░░░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝ ");
+
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                Console.WriteLine("1 - Cadastrar Paciente");
+                Console.WriteLine("2 - Cadastrar Médico");
+                Console.WriteLine("3 - Cadastrar Leito");
+                Console.WriteLine("4 - Registrar Internação");
+                Console.WriteLine("5 - Dar Alta Hospitalar");
+                Console.WriteLine("6 - Listar Pacientes Internados");
+                Console.WriteLine("7 - Exibir Relatório Geral");
+                Console.WriteLine("0 - Sair");
+                Console.Write("Opção: ");
+
+                int.TryParse(Console.ReadLine(), out opcao);
+
+                switch (opcao)
+                {
+                    case 1: CadastrarPaciente(); break;
+                    case 2: CadastrarMedico(); break;
+                    case 3: CadastrarLeito(); break;
+                    case 4: RegistrarInternacao(); break;
+                    case 5: DarAlta(); break;
+                    case 6: ListarInternados(); break;
+                    case 7: ExibirRelatorio(); break;
+                }
+            }
+        }
+
+        static void CadastrarPaciente()
+        {
+            var p = new Paciente { Id = pacientes.Count + 1 };
+            Console.Write("Nome: "); p.Nome = Console.ReadLine() ?? "";
+            Console.Write("CPF: "); p.CPF = Console.ReadLine() ?? "";
+            Console.Write("Data Nasc (dd/mm/aaaa): "); DateTime.TryParse(Console.ReadLine(), out DateTime d); p.DataNascimento = d;
+            Console.Write("Tipo Sanguíneo: "); p.TipoSanguineo = Console.ReadLine() ?? "";
+            Console.Write("Alergias: "); p.Alergias = Console.ReadLine() ?? "";
+            Console.Write("Contato Emergência: "); p.ContatoEmergencia = Console.ReadLine() ?? "";
+            pacientes.Add(p);
+            Console.WriteLine("Paciente registado com ID " + p.Id);
+        }
+
+        static void CadastrarMedico()
+        {
+            var m = new Medico { Id = medicos.Count + 1 };
+            Console.Write("Nome: "); m.Nome = Console.ReadLine() ?? "";
+            Console.Write("CRM: "); m.CRM = Console.ReadLine() ?? "";
+            Console.Write("Especialidade: "); m.Especialidade = Console.ReadLine() ?? "";
+            Console.Write("Telefone: "); m.Telefone = Console.ReadLine() ?? "";
+            medicos.Add(m);
+            Console.WriteLine("Médico registado com ID " + m.Id);
+        }
+
+        static void CadastrarLeito()
+        {
+            var l = new Leito { Id = leitos.Count + 1 };
+            Console.Write("Nº Quarto: "); l.NumeroQuarto = Console.ReadLine() ?? "";
+            Console.Write("Tipo (UTI/Enfermaria): "); l.Tipo = Console.ReadLine() ?? "";
+            leitos.Add(l);
+            Console.WriteLine("Leito registado com ID " + l.Id);
+        }
+
+        static void RegistrarInternacao()
+        {
+            Console.Write("ID Paciente: "); int.TryParse(Console.ReadLine(), out int idP);
+            Console.Write("ID Médico: "); int.TryParse(Console.ReadLine(), out int idM);
+            Console.Write("ID Leito Livre: "); int.TryParse(Console.ReadLine(), out int idL);
+
+            var leito = leitos.FirstOrDefault(l => l.Id == idL && !l.EstaOcupado);
+            if (leito == null) { Console.WriteLine("Leito indisponível ou inexistente."); return; }
+
+            Console.Write("Diagnóstico: "); string diag = Console.ReadLine() ?? "";
+
+            internacoes.Add(new Internacao
+            {
+                Id = internacoes.Count + 1,
+                PacienteId = idP,
+                MedicoResponsavelId = idM,
+                LeitoId = idL,
+                DataEntrada = DateTime.Now,
+                DiagnosticoEntrada = diag
+            });
+
+            leito.EstaOcupado = true;
+            Console.WriteLine("Internação registrada com sucesso!");
+        }
+
+        static void DarAlta()
+        {
+            Console.Write("ID Internação: "); int.TryParse(Console.ReadLine(), out int id);
+            var i = internacoes.FirstOrDefault(x => x.Id == id && x.Status == "Em Internação");
+
+            if (i != null)
+            {
+                i.Status = "Alta Concluída";
+                i.DataAlta = DateTime.Now;
+                var leito = leitos.FirstOrDefault(l => l.Id == i.LeitoId);
+                if (leito != null) leito.EstaOcupado = false;
+                Console.WriteLine("Alta registada com sucesso!");
+            }
+            else Console.WriteLine("Internação não encontrada.");
+        }
+
+        static void ListarInternados()
+        {
+            var ativos = internacoes.Where(i => i.Status == "Em Internação");
+            foreach (var i in ativos)
+            {
+                var p = pacientes.FirstOrDefault(x => x.Id == i.PacienteId);
+                TimeSpan tempo = DateTime.Now - i.DataEntrada;
+                Console.WriteLine($"ID: {i.Id} | Paciente: {p?.Nome} | Leito: {i.LeitoId} | Horas Internado: {tempo.TotalHours:F1}h");
+            }
+        }
+
+        static void ExibirRelatorio()
+        {
+            Console.WriteLine($"Pacientes: {pacientes.Count} | Médicos: {medicos.Count}");
+            Console.WriteLine($"Leitos Ocupados: {leitos.Count(l => l.EstaOcupado)} / {leitos.Count}");
+            Console.WriteLine($"Internações Ativas: {internacoes.Count(i => i.Status == "Em Internação")}");
+        }
+    }
+}
+
