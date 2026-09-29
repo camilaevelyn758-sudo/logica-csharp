@@ -1,0 +1,244 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+
+
+namespace pt1
+{
+
+    public class ClientePodologia
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string CPF { get; set; }
+        public string Telefone { get; set; }
+        public string DataNascimento { get; set; }
+        public bool PossuiDiabetes { get; set; }
+        public string ObservacoesAnamnese { get; set; }
+    }
+
+    public class Podologo
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string CPF { get; set; }
+        public string Telefone { get; set; }
+    }
+
+    public class Servico
+    {
+        public int Id { get; set; }
+        public string NomeServico { get; set; }
+        public double Preco { get; set; }
+    }
+
+    public class Consulta
+    {
+        public int Id { get; set; }
+        public string Cliente { get; set; }
+        public string Podologo { get; set; }
+        public string Servico { get; set; }
+        public string DataHora { get; set; }
+    }
+
+    // === PROGRAMA ===
+    class Program
+    {
+        static List<ClientePodologia> clientes = new List<ClientePodologia>();
+        static List<Podologo> podologos = new List<Podologo>();
+        static List<Servico> servicos = new List<Servico>();
+        static List<Consulta> consultas = new List<Consulta>();
+
+        static void Main(string[] args)
+        {
+            string opcao;
+            do
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                Console.WriteLine(@"
+░█████╗░██╗░░░░░██╗███╗░░██╗██╗░█████╗░░█████╗░  ██████╗░███████╗
+██╔══██╗██║░░░░░██║████╗░██║██║██╔══██╗██╔══██╗  ██╔══██╗██╔════╝
+██║░░╚═╝██║░░░░░██║██╔██╗██║██║██║░░╚═╝███████║  ██║░░██║█████╗░░
+██║░░██╗██║░░░░░██║██║╚████║██║██║░░██╗██╔══██║  ██║░░██║██╔══╝░░
+╚█████╔╝███████╗██║██║░╚███║██║╚█████╔╝██║░░██║  ██████╔╝███████╗
+░╚════╝░╚══════╝╚═╝╚═╝░░╚══╝╚═╝░╚════╝░╚═╝░░╚═╝  ╚═════╝░╚══════╝
+
+██████╗░░█████╗░██████╗░░█████╗░██╗░░░░░░█████╗░░██████╗░██╗░█████╗░  ░░░░░░
+██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║░░░░░██╔══██╗██╔════╝░██║██╔══██╗  ░░░░░░
+██████╔╝██║░░██║██║░░██║██║░░██║██║░░░░░██║░░██║██║░░██╗░██║███████║  █████╗
+██╔═══╝░██║░░██║██║░░██║██║░░██║██║░░░░░██║░░██║██║░░╚██╗██║██╔══██║  ╚════╝
+██║░░░░░╚█████╔╝██████╔╝╚█████╔╝███████╗╚█████╔╝╚██████╔╝██║██║░░██║  ░░░░░░
+╚═╝░░░░░░╚════╝░╚═════╝░░╚════╝░╚══════╝░╚════╝░░╚═════╝░╚═╝╚═╝░░╚═╝  ░░░░░░
+
+░█████╗░░██████╗░███████╗███╗░░██╗██████╗░░█████╗░███╗░░░███╗███████╗███╗░░██╗████████╗░█████╗░░██████╗
+██╔══██╗██╔════╝░██╔════╝████╗░██║██╔══██╗██╔══██╗████╗░████║██╔════╝████╗░██║╚══██╔══╝██╔══██╗██╔════╝
+███████║██║░░██╗░█████╗░░██╔██╗██║██║░░██║███████║██╔████╔██║█████╗░░██╔██╗██║░░░██║░░░██║░░██║╚█████╗░
+██╔══██║██║░░╚██╗██╔══╝░░██║╚████║██║░░██║██╔══██║██║╚██╔╝██║██╔══╝░░██║╚████║░░░██║░░░██║░░██║░╚═══██╗
+██║░░██║╚██████╔╝███████╗██║░╚███║██████╔╝██║░░██║██║░╚═╝░██║███████╗██║░╚███║░░░██║░░░╚█████╔╝██████╔╝
+╚═╝░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚══╝╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═════╝░");
+
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("1 - Cadastrar Cliente (Ficha Rápida)");
+                Console.WriteLine("2 - Cadastrar Podólogo");
+                Console.WriteLine("3 - Cadastrar Procedimento/Serviço");
+                Console.WriteLine("4 - Agendar Consulta");
+                Console.WriteLine("5 - Listar Agendamentos");
+                Console.WriteLine("6 - Exibir Todos os Cadastros");
+                Console.WriteLine("0 - Sair");
+                Console.Write("\nEscolha uma opção: ");
+                opcao = Console.ReadLine();
+
+                Console.Clear();
+                switch (opcao)
+                {
+                    case "1": CadastrarCliente(); break;
+                    case "2": CadastrarPodologo(); break;
+                    case "3": CadastrarServico(); break;
+                    case "4": AgendarConsulta(); break;
+                    case "5": ListarAgendamentos(); break;
+                    case "6": ExibirTodosCadastros(); break;
+                }
+
+                if (opcao != "0")
+                {
+                    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+                    Console.ReadKey();
+                }
+
+            } while (opcao != "0");
+        }
+
+        static void CadastrarCliente()
+        {
+            var c = new ClientePodologia { Id = clientes.Count + 1 };
+            Console.Write("Nome: "); c.Nome = Console.ReadLine();
+            Console.Write("CPF: "); c.CPF = Console.ReadLine();
+            Console.Write("Telefone: "); c.Telefone = Console.ReadLine();
+            Console.Write("Data Nasc. (DD/MM/AAAA): "); c.DataNascimento = Console.ReadLine();
+            Console.Write("Possui Diabetes? (S/N): "); c.PossuiDiabetes = Console.ReadLine().ToUpper() == "S";
+            Console.Write("Observações/Anamnese: "); c.ObservacoesAnamnese = Console.ReadLine();
+
+            clientes.Add(c);
+            Console.WriteLine("\nCliente cadastrado!");
+        }
+
+        static void CadastrarPodologo()
+        {
+            var p = new Podologo { Id = podologos.Count + 1 };
+            Console.Write("Nome: "); p.Nome = Console.ReadLine();
+            Console.Write("CPF: "); p.CPF = Console.ReadLine();
+            Console.Write("Telefone: "); p.Telefone = Console.ReadLine();
+
+            podologos.Add(p);
+            Console.WriteLine("\nPodólogo cadastrado!");
+        }
+
+        static void CadastrarServico()
+        {
+            var s = new Servico { Id = servicos.Count + 1 };
+            Console.Write("Nome do Serviço: "); s.NomeServico = Console.ReadLine();
+            Console.Write("Preço (R$): "); double.TryParse(Console.ReadLine(), out double preco); s.Preco = preco;
+
+            servicos.Add(s);
+            Console.WriteLine("\nServiço cadastrado!");
+        }
+
+        static void AgendarConsulta()
+        {
+            if (clientes.Count == 0 || podologos.Count == 0 || servicos.Count == 0)
+            {
+                Console.WriteLine("Cadastre ao menos 1 cliente, 1 podólogo e 1 serviço primeiro!");
+                return;
+            }
+
+            var c = new Consulta
+            {
+                Id = consultas.Count + 1,
+                Cliente = clientes[0].Nome,
+                Podologo = podologos[0].Nome,
+                Servico = servicos[0].NomeServico
+            };
+
+            Console.Write("Data e Hora (ex: 20/10 14:00): ");
+            c.DataHora = Console.ReadLine();
+
+            consultas.Add(c);
+            Console.WriteLine("\nConsulta agendada com sucesso!");
+        }
+
+        static void ListarAgendamentos()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(@"
+██╗░░░░░██╗░██████╗████████╗░█████╗░  ██████╗░███████╗
+██║░░░░░██║██╔════╝╚══██╔══╝██╔══██╗  ██╔══██╗██╔════╝
+██║░░░░░██║╚█████╗░░░░██║░░░███████║  ██║░░██║█████╗░░
+██║░░░░░██║░╚═══██╗░░░██║░░░██╔══██║  ██║░░██║██╔══╝░░
+███████╗██║██████╔╝░░░██║░░░██║░░██║  ██████╔╝███████╗
+╚══════╝╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝  ╚═════╝░╚══════╝
+
+░█████╗░░██████╗░███████╗███╗░░██╗██████╗░░█████╗░███╗░░░███╗███████╗███╗░░██╗████████╗░█████╗░░██████╗
+██╔══██╗██╔════╝░██╔════╝████╗░██║██╔══██╗██╔══██╗████╗░████║██╔════╝████╗░██║╚══██╔══╝██╔══██╗██╔════╝
+███████║██║░░██╗░█████╗░░██╔██╗██║██║░░██║███████║██╔████╔██║█████╗░░██╔██╗██║░░░██║░░░██║░░██║╚█████╗░
+██╔══██║██║░░╚██╗██╔══╝░░██║╚████║██║░░██║██╔══██║██║╚██╔╝██║██╔══╝░░██║╚████║░░░██║░░░██║░░██║░╚═══██╗
+██║░░██║╚██████╔╝███████╗██║░╚███║██████╔╝██║░░██║██║░╚═╝░██║███████╗██║░╚███║░░░██║░░░╚█████╔╝██████╔╝
+╚═╝░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚══╝╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═════╝░ ");
+
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            if (consultas.Count == 0) Console.WriteLine("Nenhum agendamento.");
+            foreach (var c in consultas)
+            {
+                Console.WriteLine($"[{c.DataHora}] Cliente: {c.Cliente} | Podólogo: {c.Podologo} | Serviço: {c.Servico}");
+            }
+        }
+
+        static void ExibirTodosCadastros ()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            Console.WriteLine(@"
+████████╗░█████╗░██████╗░░█████╗░░██████╗  ░█████╗░░██████╗
+╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔══██╗██╔════╝
+░░░██║░░░██║░░██║██║░░██║██║░░██║╚█████╗░  ██║░░██║╚█████╗░
+░░░██║░░░██║░░██║██║░░██║██║░░██║░╚═══██╗  ██║░░██║░╚═══██╗
+░░░██║░░░╚█████╔╝██████╔╝╚█████╔╝██████╔╝  ╚█████╔╝██████╔╝
+░░░╚═╝░░░░╚════╝░╚═════╝░░╚════╝░╚═════╝░  ░╚════╝░╚═════╝░
+
+░█████╗░░█████╗░██████╗░░█████╗░░██████╗████████╗██████╗░░█████╗░░██████╗
+██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝
+██║░░╚═╝███████║██║░░██║███████║╚█████╗░░░░██║░░░██████╔╝██║░░██║╚█████╗░
+██║░░██╗██╔══██║██║░░██║██╔══██║░╚═══██╗░░░██║░░░██╔══██╗██║░░██║░╚═══██╗
+╚█████╔╝██║░░██║██████╔╝██║░░██║██████╔╝░░░██║░░░██║░░██║╚█████╔╝██████╔╝
+░╚════╝░╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═════╝░");
+
+
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Blue;
+
+
+            Console.WriteLine("\n[CLIENTES]");
+            foreach (var c in clientes)
+                Console.WriteLine($"ID: {c.Id} | Nome: {c.Nome} | CPF: {c.CPF} | Diabetes: {(c.PossuiDiabetes ? "Sim" : "Não")} | Anamnese: {c.ObservacoesAnamnese}");
+
+            Console.WriteLine("\n[PODÓLOGOS]");
+            foreach (var p in podologos)
+                Console.WriteLine($"ID: {p.Id} | Nome: {p.Nome} | CPF: {p.CPF}");
+
+            Console.WriteLine("\n[SERVIÇOS]");
+            foreach (var s in servicos)
+                Console.WriteLine($"ID: {s.Id} | Serviço: {s.NomeServico} | Preço: R$ {s.Preco:F2}");
+        }
+    }
+}
+
